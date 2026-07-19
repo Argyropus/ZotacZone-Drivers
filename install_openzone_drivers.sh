@@ -75,12 +75,12 @@ rm -f $DIAL_SERVICE_PATH
 rm -f "$DIAL_INSTALL_DIR/$DIAL_SCRIPT_NAME"
 log_success "Cleaned."
 
-# # --- Step 2: Prerequisites ---
-# log_header "Step 2/4: Checking prerequisites..."
-# if ! python3 -c "import evdev" &> /dev/null; then
-#     log_info "Installing python-evdev..."
-#     pip install evdev --break-system-packages 2>/dev/null || pip install evdev
-# fi
+# --- Step 2: Prerequisites ---
+log_header "Step 2/4: Checking prerequisites..."
+if ! python3 -c "import evdev" &> /dev/null; then
+    log_info "Installing python-evdev..."
+    pip install evdev --break-system-packages 2>/dev/null || pip install evdev
+fi
 
 # mkdir -p /etc/modules-load.d
 # modprobe uinput
@@ -110,8 +110,8 @@ from evdev import UInput, ecodes as e
 
 # --- ARGS ---
 parser = argparse.ArgumentParser()
-parser.add_argument("--left", default="volume")
-parser.add_argument("--right", default="brightness")
+parser.add_argument("--left", default="brightness")
+parser.add_argument("--right", default="volume")
 args = parser.parse_args()
 
 # --- CONSTANTS ---
