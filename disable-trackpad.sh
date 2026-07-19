@@ -9,7 +9,8 @@ sudo steamos-readonly disable
 # 2. udev 규칙 파일 생성 및 내용 쓰기
 echo "[2/4] 터치패드 무력화 udev 규칙을 심는 중입니다..."
 RULE_FILE="/etc/udev/rules.d/99-disable-zone-trackpad.rules"
-RULE_CONTENT='ACTION=="add|change", KERNEL=="event*", ATTRS{name}=="ZOTAC Gaming Zone Mouse", RUN+="/bin/chmod 0000 %c"'
+# 작동이 확인된 오리지널 규칙 내용으로 변경
+RULE_CONTENT='ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="ZOTAC Gaming Zone Mouse", MODE="0000", ENV{ID_INPUT}="", ENV{LIBINPUT_IGNORE_DEVICE}="1"'
 
 # sudo 권한으로 파일에 내용 기록
 echo "$RULE_CONTENT" | sudo tee "$RULE_FILE" > /dev/null
