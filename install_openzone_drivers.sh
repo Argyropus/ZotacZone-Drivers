@@ -190,7 +190,7 @@ def main():
             
         print(f"Reading {dev_path}...")
         try:
-            with open(dev_path, "rb") as f:
+            with open(dev_path, "rb", buffering=0) as f:
                 while True:
                     data = f.read(64)
                     if not data: break
