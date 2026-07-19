@@ -82,20 +82,20 @@ if ! python3 -c "import evdev" &> /dev/null; then
     pip install evdev --break-system-packages 2>/dev/null || pip install evdev
 fi
 
-# mkdir -p /etc/modules-load.d
-# modprobe uinput
-# echo "uinput" > /etc/modules-load.d/zotac-uinput.conf
-# log_success "Prerequisites OK."
+mkdir -p /etc/modules-load.d
+modprobe uinput
+echo "uinput" > /etc/modules-load.d/zotac-uinput.conf
+log_success "Prerequisites OK."
 
 # --- Step 3: Install Dial Daemon (HIDRAW FIX) ---
 log_header "Step 3/4: Installing Dial Daemon (Raw Access)..."
 mkdir -p $DIAL_INSTALL_DIR
 
-# # 1. Udev Rule
-# cat > "/etc/udev/rules.d/99-zotac-zone.rules" <<EOF
-# KERNEL=="hidraw*", ATTRS{idVendor}=="1ee9", ATTRS{idProduct}=="1590", MODE="0666"
-# EOF
-# udevadm control --reload-rules && udevadm trigger
+# 1. Udev Rule
+cat > "/etc/udev/rules.d/99-zotac-zone.rules" <<EOF
+KERNEL=="hidraw*", ATTRS{idVendor}=="1ee9", ATTRS{idProduct}=="1590", MODE="0666"
+EOF
+udevadm control --reload-rules && udevadm trigger
 
 # 2. Generate Python Script (HIDRAW Based)
 cat << 'EOF' > "$DIAL_INSTALL_DIR/$DIAL_SCRIPT_NAME"
