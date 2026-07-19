@@ -62,11 +62,9 @@ if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
 fi
 
 # Unlock SteamOS filesystem
-if command -v steamos-readonly &> /dev/null; then
-    log_info "Unlocking SteamOS read-only filesystem..."
-    steamos-readonly disable
-    log_success "Filesystem unlocked."
-fi
+log_info "Unlocking SteamOS read-only filesystem..."
+steamos-readonly disable
+log_success "Filesystem unlocked."
 
 # --- Step 1: Cleanup ---
 log_header "Step 1/4: Cleaning up old installations..."
@@ -270,11 +268,9 @@ else
 fi
 
 # Re-lock SteamOS filesystem
-if command -v steamos-readonly &> /dev/null; then
-    log_info "Restoring SteamOS read-only filesystem..."
-    steamos-readonly enable
-    log_success "Filesystem locked."
-fi
+log_info "Restoring SteamOS read-only filesystem..."
+steamos-readonly enable
+log_success "Filesystem locked."
 
 # --- Summary ---
 echo -e "\n${GREEN}============================================================${NC}"
