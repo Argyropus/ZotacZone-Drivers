@@ -4,7 +4,7 @@
 # ==============================================================================
 #  Drivers by: flukejones (Luke D. Jones)
 #  Installer by: Pfahli
-#  Modified for SteamOS (Dial Daemon Only)
+#  Modified for SteamOS (Dial Daemon Only + Read/Write Unlock)
 # ==============================================================================
 
 # --- Colors & Formatting ---
@@ -37,7 +37,7 @@ print_banner() {
     echo "#                                                          #"
     echo "#       ZOTAC ZONE DIAL DAEMON INSTALLER (SteamOS)         #"
     echo "#                                                          #"
-    echo "#   Target OS:   SteamOS (Drivers already included)        #"
+    echo "#   Target OS:   SteamOS (Read/Write Unlock Included)      #"
     echo "#   Installs:    Steam Gaming Mode (Raw HID Access)        #"
     echo "#                                                          #"
     echo "############################################################"
@@ -52,13 +52,20 @@ fi
 
 print_banner
 
-# --- Step 0: Disclaimer ---
+# --- Step 0: Disclaimer & SteamOS Unlock ---
 echo -e "${YELLOW}${BOLD}IMPORTANT NOTICE:${NC}"
 echo -e "This script installs the Dial Daemon and System Services for SteamOS."
 echo -n -e "${GREEN}Do you proceed? [y/N]: ${NC}"
 read -r confirm
 if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
     echo -e "\n${RED}Aborted.${NC}"; exit 0
+fi
+
+# Unlock SteamOS filesystem
+if command -v steamos-readonly &> /dev/null; then
+    log_info "Unlocking SteamOS read-only filesystem..."
+    steamos-readonly disable
+    log_success "Filesystem unlocked."
 fi
 
 # --- Step 1: Cleanup ---
@@ -77,9 +84,20 @@ log_success "Cleaned."
 #     pip install evdev --break-system-packages 2>/dev/null || pip install evdev
 # fi
 
+# mkdir -p /etc/modules-load.d
+# modprobe uinput
+# echo "uinput" > /etc/modules-load.d/zotac-uinput.conf
+# log_success "Prerequisites OK."
+
 # --- Step 3: Install Dial Daemon (HIDRAW FIX) ---
 log_header "Step 3/4: Installing Dial Daemon (Raw Access)..."
 mkdir -p $DIAL_INSTALL_DIR
+
+# # 1. Udev Rule
+# cat > "/etc/udev/rules.d/99-zotac-zone.rules" <<EOF
+# KERNEL=="hidraw*", ATTRS{idVendor}=="1ee9", ATTRS{idProduct}=="1590", MODE="0666"
+# EOF
+# udevadm control --reload-rules && udevadm trigger
 
 # 2. Generate Python Script (HIDRAW Based)
 cat << 'EOF' > "$DIAL_INSTALL_DIR/$DIAL_SCRIPT_NAME"
@@ -249,6 +267,13 @@ if systemctl is-active --quiet "$DIAL_SERVICE_NAME"; then
     log_success "Dial Service Running."
 else
     log_warn "Dial Service failed start. Check logs."
+fi
+
+# Re-lock SteamOS filesystem
+if command -v steamos-readonly &> /dev/null; then
+    log_info "Restoring SteamOS read-only filesystem..."
+    steamos-readonly enable
+    log_success "Filesystem locked."
 fi
 
 # --- Summary ---
