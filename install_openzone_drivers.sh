@@ -115,8 +115,8 @@ parser.add_argument("--right", default="volume")
 args = parser.parse_args()
 
 # --- CONSTANTS ---
-VID = "1EE9"
-PID = "1590"
+VID = "00001EE9"
+PID = "00001590"
 
 # --- ACTION MAP ---
 ACTIONS = {
