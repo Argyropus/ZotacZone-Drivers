@@ -159,7 +159,7 @@ def find_hidraw():
         try:
             with open(os.path.join(p, "device/uevent"), "r") as f:
                 c = f.read().upper()
-                if f"HID_ID={VID}:{PID}" in c or (f"PRODUCT={VID}/{PID}" in c):
+                if f"HID_ID=0003:{VID}:{PID}" in c or (f"PRODUCT=0003:{VID}/{PID}" in c):
                     return f"/dev/{os.path.basename(p)}"
         except: continue
     return None
