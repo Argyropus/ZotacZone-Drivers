@@ -1,12 +1,11 @@
-# OpenZONE: Zotac Zone Linux Drivers & Manager
+# OpenZONE: Zotac Zone Linux Drivers & Manager for SteamOS
 [![OpenZONE Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/YFhK768cex)
 ![License](https://img.shields.io/badge/license-GPL-blue.svg) ![Platform](https://img.shields.io/badge/platform-Linux-green.svg)
 
-**OpenZONE** is a complete driver suite for the **Zotac Zone** handheld gaming console running Bazzite or Fedora. It enables full hardware functionality including the Radial Dials, RGB lighting, Back Buttons and Fans.
+**OpenZONE** is a complete driver suite for the **Zotac Zone** handheld gaming console running SteamOS. It enables full hardware functionality including the Radial Dials, RGB lighting, Back Buttons and Fans.
 
 ## ✨ Features
 
-* **Kernel Drivers:** Full HID and Platform support (Battery, Fan, Thermals).
 * **Radial Dials:** Map the mechanical dials to Volume, Brightness, Scroll, Zoom, or Arrows.
 * **RGB Lighting:** Control both rear halo zones (Static, Breathe, Wave, Cycle).
 * **Back Buttons:** Remap M1 and M2 to Gamepad buttons, Keyboard keys, or Mouse clicks.
@@ -83,9 +82,7 @@ This will:
 
 ## ⚠️ Requirements & Compatibility
 
-* **OS:** Linux (Bazzite, Fedora Atomic, Arch, etc.)
-* **Kernel Headers:** Must be installed for your current kernel version to compile the driver.
-    * *Bazzite/Fedora:* `rpm-ostree install kernel-devel-$(uname -r) gcc make`
+* **OS:** SteamOS
 * **Secure Boot:** If Secure Boot is enabled, you may need to sign the kernel modules manually, or disable Secure Boot.
 
 ## 🤝 Credits
